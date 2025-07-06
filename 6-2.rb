@@ -7,7 +7,7 @@ word_count_hash = Hash.new 0
 text.split(/\W+/).each { |word| word_count_hash[word.downcase] += 1 }
 pp word_count_hash
 pp text
-first_letter_hash = Hash.new []
+first_letter_hash = Hash.new { |h, k| h[k] = [] }
 text.split(/\W+/).each do |word|
   first_letter_hash[word[0, 1].downcase] << word
 end
