@@ -13,11 +13,23 @@ survey_results = { 'Alice' => :red, 'Bob' => :green, 'Carol' => :green,
                    'Mallory' => :blue }
 
 puts [1, 2, 2, 2, 5, 5, 7, 8, 8, 8].to_histogram
+def histogram_to_pairs(histogram)
+  histogram.keys.collect { |x| [x.to_s, histogram[x]] }.sort
+end
+
+def find_largest_key_size(pairs)
+  pairs.max { |x, y| x[0].size <=> y[0].size }[0].size
+end
+
+def format_graph_line(key, value, key_size, char)
+  "#{key.ljust(key_size)} |#{char * value}\n"
+end
+
 def draw_graph(histogram, char = '*')
-  pairs = histogram.keys.collect { |x| [x.to_s, histogram[x]] }.sort
-  largest_key_size = pairs.max { |x, y| x[0].size <=> y[0].size }[0].size
+  pairs = histogram_to_pairs(histogram)
+  largest_key_size = find_largest_key_size(pairs)
   pairs.inject('') do |s, kv|
-    s << "#{kv[0].ljust(largest_key_size)} |#{char * kv[1]}\n"
+    s << format_graph_line(kv[0], kv[1], largest_key_size, char)
   end
 end
 puts draw_graph(survey_results.values.to_histogram)
