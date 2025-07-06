@@ -18,4 +18,25 @@ def choose_weighted(weighted)
     target -= weight
   end
 end
-5.times { puts choose_weighted(lottery_probabilities) }
+
+def normalize!(weighted)
+  sum = weighted.inject(0) do |sum, item_and_weight|
+    sum + item_and_weight[1]
+  end
+  sum = sum.to_f
+  weighted.each { |item, weight| weighted[item] = weight / sum }
+end
+
+def choose_weighted_assuming_unity(weighted)
+  target = rand
+  weighted.each do |item, weight|
+    return item if target <= weight
+
+    target -= weight
+  end
+end
+normalize!(lottery_probabilities)
+puts choose_weighted_assuming_unity(lottery_probabilities)
+
+# 5.times { puts choose_weighted(lottery_probabilities) }
+5.times { puts choose_weighted_assuming_unity(lottery_probabilities) }
